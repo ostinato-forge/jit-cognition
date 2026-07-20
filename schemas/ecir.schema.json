@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jitc.local/schemas/ecir-0.1.json",
+  "title": "JITC Epistemic Contract Intermediate Representation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ecir_version",
+    "contract",
+    "policies",
+    "objects",
+    "claims",
+    "commands",
+    "permissions"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "ecir_version": {"const": "0.1"},
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_id", "mandatory_claim_ids"],
+      "properties": {
+        "contract_id": {"$ref": "#/$defs/id"},
+        "mandatory_claim_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/policy"}
+    },
+    "objects": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/object"}
+    },
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim"}
+    },
+    "commands": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/command"}
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["effect", "command_id"],
+        "properties": {
+          "effect": {"const": "execute"},
+          "command_id": {"$ref": "#/$defs/id"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id"],
+      "properties": {
+        "policy_id": {"$ref": "#/$defs/id"},
+        "minimum_passes": {"type": "integer", "minimum": 1, "default": 1},
+        "allowed_verifier_ids": {"$ref": "#/$defs/stringArray"},
+        "minimum_distinct_mechanisms": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 1
+        },
+        "minimum_distinct_implementations": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 1
+        },
+        "minimum_distinct_data_sources": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "require_authority_separation": {
+          "type": "boolean",
+          "default": true
+        },
+        "required_environment_digest": {
+          "type": ["string", "null"],
+          "minLength": 1
+        }
+      }
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_id", "kind", "payload_digest", "producer_id"],
+      "properties": {
+        "object_id": {"$ref": "#/$defs/id"},
+        "kind": {
+          "enum": [
+            "observation",
+            "assumption",
+            "artifact",
+            "capability",
+            "environment",
+            "source",
+            "verifier"
+          ]
+        },
+        "payload_digest": {"$ref": "#/$defs/id"},
+        "producer_id": {"$ref": "#/$defs/id"},
+        "dependencies": {"$ref": "#/$defs/stringArray"},
+        "scope": {"type": "string", "minLength": 1, "default": "task"}
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "statement_digest",
+        "proposer_id",
+        "policy_id"
+      ],
+      "properties": {
+        "claim_id": {"$ref": "#/$defs/id"},
+        "statement_digest": {"$ref": "#/$defs/id"},
+        "proposer_id": {"$ref": "#/$defs/id"},
+        "policy_id": {"$ref": "#/$defs/id"},
+        "dependencies": {"$ref": "#/$defs/stringArray"},
+        "scope": {"type": "string", "minLength": 1, "default": "task"}
+      }
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command_id",
+        "action_id",
+        "capability_id",
+        "argv",
+        "cwd",
+        "supports_claim_id",
+        "environment_files",
+        "environment_digest"
+      ],
+      "properties": {
+        "command_id": {"$ref": "#/$defs/id"},
+        "action_id": {"$ref": "#/$defs/id"},
+        "capability_id": {"$ref": "#/$defs/id"},
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "cwd": {"type": "string", "minLength": 1},
+        "supports_claim_id": {"$ref": "#/$defs/id"},
+        "dependencies": {"$ref": "#/$defs/stringArray"},
+        "environment_files": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "environment_digest": {"$ref": "#/$defs/id"},
+        "expected_exit_code": {"type": "integer", "default": 0},
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "default": 120
+        },
+        "output_limit_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 32768
+        }
+      }
+    }
+  }
+}

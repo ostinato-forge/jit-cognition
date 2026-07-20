@@ -1,0 +1,80 @@
+{
+  "$schema": "../schemas/ecir.schema.json",
+  "ecir_version": "0.1",
+  "contract": {
+    "contract_id": "contract:jitc-kernel-self-check",
+    "mandatory_claim_ids": ["claim:kernel-tests-pass"]
+  },
+  "policies": [
+    {
+      "policy_id": "policy:deterministic-test-pass",
+      "minimum_passes": 1,
+      "allowed_verifier_ids": ["verifier:exit-code"],
+      "minimum_distinct_mechanisms": 1,
+      "minimum_distinct_implementations": 1,
+      "minimum_distinct_data_sources": 1,
+      "require_authority_separation": true,
+      "required_environment_digest": "sha256:750751cac2e872d5506392a764ed1c55df59be5e0a6a6f3bd879bbee44d95502"
+    }
+  ],
+  "objects": [
+    {
+      "object_id": "environment:jitc-local",
+      "kind": "environment",
+      "payload_digest": "sha256:750751cac2e872d5506392a764ed1c55df59be5e0a6a6f3bd879bbee44d95502",
+      "producer_id": "human:operator",
+      "dependencies": [],
+      "scope": "repository"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim:kernel-tests-pass",
+      "statement_digest": "sha256:python-test-suite-exits-zero",
+      "proposer_id": "human:researcher",
+      "policy_id": "policy:deterministic-test-pass",
+      "dependencies": ["environment:jitc-local"],
+      "scope": "repository"
+    }
+  ],
+  "commands": [
+    {
+      "command_id": "run-kernel-tests",
+      "action_id": "action:run-kernel-tests",
+      "capability_id": "capability:no-shell-subprocess-v1",
+      "argv": ["python3", "-m", "pytest", "-q"],
+      "cwd": ".",
+      "supports_claim_id": "claim:kernel-tests-pass",
+      "dependencies": ["environment:jitc-local"],
+      "environment_files": [
+        "pyproject.toml",
+        "src/jitc/__init__.py",
+        "src/jitc/__main__.py",
+        "src/jitc/cli.py",
+        "src/jitc/ecir.py",
+        "src/jitc/experiment.py",
+        "src/jitc/ledger.py",
+        "src/jitc/model.py",
+        "src/jitc/repository.py",
+        "src/jitc/repository_pilot.py",
+        "src/jitc/runtime.py",
+        "tests/test_ecir.py",
+        "tests/test_experiment.py",
+        "tests/test_repository_adapter.py",
+        "tests/test_repository_pilot.py",
+        "tests/test_runtime.py",
+        "tests/test_state_space.py"
+      ],
+      "environment_digest": "sha256:750751cac2e872d5506392a764ed1c55df59be5e0a6a6f3bd879bbee44d95502",
+      "expected_exit_code": 0,
+      "timeout_seconds": 120,
+      "output_limit_bytes": 32768
+    }
+  ],
+  "permissions": [
+    {
+      "effect": "execute",
+      "command_id": "run-kernel-tests"
+    }
+  ]
+}
