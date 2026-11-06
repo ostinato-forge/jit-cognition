@@ -1,5 +1,7 @@
 # Just-in-Time Cognition
 
+> **Status:** A research program, not a product. The working note, the adversarial stress test, and the academic pass are complete; the formal core and the experiment harness in `src` are early and the tests cover the harness only. Maintained as notes.
+
 Just-in-Time Cognition (JITC) is a research program for verifier-governed
 agents. It asks whether some competence can move from an opaque proposal model
 into explicit task contracts, live evidence, permissioned tools, and reusable
@@ -120,3 +122,7 @@ PYTHONPATH=src python3 -m jitc.repository_pilot
 
 This pilot executes patched fixture code and is not an OS sandbox. It is safe
 only for the repository's trusted static candidate generators.
+
+## License
+
+Text and notes: CC BY 4.0 (LICENSE). Code: Apache-2.0 (LICENSE-CODE). Attribution: eparenti.
