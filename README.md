@@ -1,6 +1,6 @@
 # Just-in-Time Cognition
 
-> **Status:** A research program, not a product. The working note, the adversarial stress test, and the academic pass are complete; the formal core and the experiment harness in `src` are early and the tests cover the harness only. Maintained as notes.
+> **Status:** A research program, not a product. The working note, the adversarial stress test, and the academic pass are complete; the formal core and the experiment harness in `src` are early. The tests cover the core, the contract loader, the state space, the repository adapter, and both experiments. Maintained as notes.
 
 Just-in-Time Cognition (JITC) is a research program for verifier-governed
 agents. It asks whether some competence can move from an opaque proposal model

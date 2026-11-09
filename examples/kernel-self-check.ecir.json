@@ -14,14 +14,14 @@
       "minimum_distinct_implementations": 1,
       "minimum_distinct_data_sources": 1,
       "require_authority_separation": true,
-      "required_environment_digest": "sha256:750751cac2e872d5506392a764ed1c55df59be5e0a6a6f3bd879bbee44d95502"
+      "required_environment_digest": "sha256:b900e65d3eb6c82d3c3501c2bc0c8e4e722e13386568238c3466bacd1759271e"
     }
   ],
   "objects": [
     {
       "object_id": "environment:jitc-local",
       "kind": "environment",
-      "payload_digest": "sha256:750751cac2e872d5506392a764ed1c55df59be5e0a6a6f3bd879bbee44d95502",
+      "payload_digest": "sha256:b900e65d3eb6c82d3c3501c2bc0c8e4e722e13386568238c3466bacd1759271e",
       "producer_id": "human:operator",
       "dependencies": [],
       "scope": "repository"
@@ -65,7 +65,7 @@
         "tests/test_runtime.py",
         "tests/test_state_space.py"
       ],
-      "environment_digest": "sha256:750751cac2e872d5506392a764ed1c55df59be5e0a6a6f3bd879bbee44d95502",
+      "environment_digest": "sha256:b900e65d3eb6c82d3c3501c2bc0c8e4e722e13386568238c3466bacd1759271e",
       "expected_exit_code": 0,
       "timeout_seconds": 120,
       "output_limit_bytes": 32768
